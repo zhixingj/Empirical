@@ -159,6 +159,32 @@ namespace web {
         if (state == Widget::ACTIVE) ReplaceHTML();
       }
 
+      void ReplaceChild(Widget & oldChild, Widget & newChild) override {
+        // ensure child is present
+        emp_assert(1 == std::count(
+          std::begin(m_children),
+          std::end(m_children),
+          oldChild
+        ));
+        
+        std::replace(
+          std::begin(m_children),
+          std::end(m_children),
+          oldChild,
+          newChild
+        );
+        // unregister and remove child
+        Unregister(*std::find(
+          std::begin(m_children),
+          std::end(m_children),
+          oldChild
+        ));
+
+        // render changes
+        if (state == Widget::ACTIVE) ReplaceHTML();
+
+      }
+
       void Clear() {
         ClearChildren();
         extras.Clear();

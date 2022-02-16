@@ -92,7 +92,7 @@ namespace web {
     Widget & SetInfo(WidgetInfo * in_info);
 
     /// Internally, we can treat a Widget as a pointer to its WidgetInfo.
-    WidgetInfo * operator->() { return info; }
+    // WidgetInfo * operator->() { return info; }
 
     /// Give derived classes the ability to access widget info.
     static WidgetInfo * Info(const Widget & w) { return w.info; }
@@ -110,6 +110,7 @@ namespace web {
 
   public:
     /// When Widgets are first created, they should be provided with an ID.
+    WidgetInfo * operator->() { return info; }
     Widget(const std::string & id);
     Widget(WidgetInfo * in_info=nullptr);
     Widget(const Widget & in) : Widget(in.info) { ; }
@@ -262,6 +263,7 @@ namespace web {
 
       virtual void AddChild(Widget in) { ; }
       virtual void RemoveChild(Widget & child) { ; }
+      virtual void ReplaceChild(Widget & oldChild, Widget & newChild) {;}
 
       // Record dependants.  Dependants are only acted upon when this widget's action is
       // triggered (e.g. a button is pressed)
