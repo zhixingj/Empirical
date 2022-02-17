@@ -109,7 +109,10 @@ namespace prefab {
         return dynamic_cast<INFO_TYPE *>(info);
       }
 
-      inline static std::set<std::string> numeric_types = {"int", "double", "float", "uint32_t", "uint64_t", "size_t"};
+      
+      
+    public:
+    inline static std::set<std::string> numeric_types = {"int", "double", "float", "uint32_t", "uint64_t", "size_t"};
       // Helper function to get prety names from config values
       inline static std::function<std::string(const std::string &)> format_label = [](
         const std::string & name
@@ -117,7 +120,8 @@ namespace prefab {
         return to_titlecase(join(slice(name, '_'), " "));
       };
 
-      /**
+
+    /**
        * Get current on-update callback.
        *
        * @return current callback function handle
@@ -126,7 +130,6 @@ namespace prefab {
           return Info()->GetOnChangeFun();
       };
 
-    public:
       /**
        * @param config config object used to construct this panel
        */
