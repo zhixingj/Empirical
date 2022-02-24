@@ -39,7 +39,7 @@ namespace prefab {
        */
       CardInfo(const std::string & in_id="")
       : DivInfo(in_id), toggle_handler([]() {;}) { ; }
-
+  // comment for checking!
       /**
        * Get the on-toggle function for this component.
        * @return the function called whenever the card's state
