@@ -286,12 +286,6 @@ class PopoverEffect : public VisualEffect {
     std::cout << "Adding popover" << std::endl;
     // widget.WrapWith(parent_widget);
     std::cout << "1" << std::endl;
-    parent_widget.SetCSS("position", "relative");
-    parent_widget.SetCSS("position", "absolute");
-    parent_widget.SetCSS("width", "100%");
-    parent_widget.SetCSS("height", "100%");
-    parent_widget.SetCSS("top", "0px");
-    parent_widget.SetCSS("left", "0px");
 
     std::cout << "2" << std::endl;
     popover_text << message;
@@ -303,18 +297,19 @@ class PopoverEffect : public VisualEffect {
     popover_container.SetAttr("class", "popup_container popup_show");
     std::cout << "4" << std::endl;
     parent_widget << popover_container;
-    if(widget.GetCSS("float") != ""){
-      parent_widget.SetCSS("float", widget.GetCSS("float"));
-    }
+    // if(widget.GetCSS("float") != ""){
+    // std::cout << "5" << std::endl;
+    //   parent_widget.SetCSS("float", widget.GetCSS("float"));
+    // }
     popover_container.SetCSS("visibility", "visible");
     popover_container.SetCSS("background-color", "yellow");
-    popover_container.SetCSS("opacity", 0.9);
-    popover_container.SetCSS("z_index", 1000);
-    popover_container.SetCSS("position", "relative");
-    popover_container.SetCSS("width", "50%");
-    popover_container.SetCSS("height", "50%");
-    popover_container.SetCSS("top", "-40vh");
-    popover_container.SetCSS("left", "30vw");
+    popover_container.SetCSS("opacity", 0.8);
+    popover_container.SetCSS("z_index", "10");
+    popover_container.SetCSS("position", "absolute");
+    popover_container.SetCSS("width", "30%");
+    popover_container.SetCSS("height", "30%");
+    popover_container.SetCSS("top", "20vh");
+    popover_container.SetCSS("left", "20vw");
     std::cout << "finished adding parent widget: " << parent_widget<<std::endl;
   }
 
@@ -358,16 +353,18 @@ private:
     overlay.SetAttr("class", "Tutorial-Overlay-Effect");
     overlay.SetCSS("background-color", color);
     overlay.SetCSS("opacity", opacity);
-    overlay.SetCSS("z_index", z_index);
-    overlay.SetCSS("position", "absolute");
+    overlay.SetCSS("z_index", -1);
+    overlay.SetCSS("position", "fixed");
     overlay.SetCSS("width", "100%");
     overlay.SetCSS("height", "100%");
     overlay.SetCSS("top", "0px");
     overlay.SetCSS("left", "0px");
+
     if (!intercept_mouse)
       overlay.SetCSS("pointer-events", "none");
     std::cout << "####In activate of overlay"<<std::endl;
     parent << overlay;
+    std::cout << "finished adding to parent of overlay"<<std::endl;
 
   }
 
