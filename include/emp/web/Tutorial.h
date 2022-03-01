@@ -304,7 +304,7 @@ class PopoverEffect : public VisualEffect {
     popover_container.SetCSS("visibility", "visible");
     popover_container.SetCSS("background-color", "yellow");
     popover_container.SetCSS("opacity", 0.8);
-    popover_container.SetCSS("z_index", "10");
+    popover_container.SetCSS("z-index", "10");
     popover_container.SetCSS("position", "absolute");
     popover_container.SetCSS("width", "30%");
     popover_container.SetCSS("height", "30%");
@@ -353,7 +353,7 @@ private:
     overlay.SetAttr("class", "Tutorial-Overlay-Effect");
     overlay.SetCSS("background-color", color);
     overlay.SetCSS("opacity", opacity);
-    overlay.SetCSS("z_index", -1);
+    overlay.SetCSS("z-index", -1);
     overlay.SetCSS("position", "fixed");
     overlay.SetCSS("width", "100%");
     overlay.SetCSS("height", "100%");
