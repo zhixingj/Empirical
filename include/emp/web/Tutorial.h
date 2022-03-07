@@ -90,10 +90,11 @@ protected:
     // Helper functions to keep bookkeeping stuff out of Activate/Deactivate.
     // Makes it simpler to override those functions in custom classes.
     void PerformActivation() {
+      std::cout << "^^^^^^^^^^^^^^^^in PerformActivation of visual" << std::endl;
       if (active) return;
-      std::cout << "in Trigger Perform activation" << std::endl;
+      std::cout << "in Trigger PerformActivation" << std::endl;
       Activate();
-      active = true;
+      // active = true;
     }
     void PerformDeactivation() {
       if (!active) return;
@@ -187,9 +188,10 @@ private:
   // Helper functions to keep bookkeeping stuff out of Activate/Deactivate.
   // Makes it simpler to override those functions in custom classes.
   void PerformActivation() {
+    std::cout << "!!!!!!!!!in performactivation of visual" << std::endl;
     if (active) return;
     Activate();
-    active = true;
+    // active = true;
   }
   void PerformDeactivation() {
     if (!active) return;
@@ -265,52 +267,53 @@ class PopoverEffect : public VisualEffect {
     //UI::Widget& original_parent_widget;
     std::string message;
     std::string popover_id;
+    std::string top;
+    std::string left;
   public:
+    //PopoverEffect(UI::internal::WidgetFacet<T>& _widget, UI::Widget & _orig_parent, std::string _message) :
+    PopoverEffect(UI::internal::WidgetFacet<T>& _widget, std::string _message, std::string _top, std::string _left, std::string id) :
+        // parent_widget(_widget.GetID() + "_popover_parent"),
+        top(_top),
+        left(_left),
+        parent_widget(_widget),
+        widget(_widget),
+        popover_container(_widget.GetID() + "_popover_container"+id),
+        popover_text(_widget.GetID() + "_popover_text"+id),
+        popover_arrow(_widget.GetID() + "_popover_arrow"),
+        //original_parent_widget(_orig_parent),
+        message(_message){
+    }
 
-  //PopoverEffect(UI::internal::WidgetFacet<T>& _widget, UI::Widget & _orig_parent, std::string _message) :
-  PopoverEffect(UI::internal::WidgetFacet<T>& _widget, std::string _message) :
-      // parent_widget(_widget.GetID() + "_popover_parent"),
-      parent_widget(_widget),
-      widget(_widget),
-      popover_container(_widget.GetID() + "_popover_container"),
-      popover_text(_widget.GetID() + "_popover_text"),
-      popover_arrow(_widget.GetID() + "_popover_arrow"),
-      //original_parent_widget(_orig_parent),
-      message(_message){
-  }
+    void Activate() {
+      emp_assert(parent_widget != nullptr);
 
-  void Activate() {
+      std::cout << "Adding popover" << std::endl;
+      // widget.WrapWith(parent_widget);
+      std::cout << "1" << std::endl;
 
-    emp_assert(parent_widget != nullptr);
-
-    std::cout << "Adding popover" << std::endl;
-    // widget.WrapWith(parent_widget);
-    std::cout << "1" << std::endl;
-
-    std::cout << "2" << std::endl;
-    popover_text << message;
-    popover_text.SetAttr("class", "popup_text");
-    popover_arrow.SetAttr("class", "popup_arrow");
-    std::cout << "3" << std::endl;
-    popover_container << popover_text;
-    popover_container << popover_arrow;
-    popover_container.SetAttr("class", "popup_container popup_show");
-    std::cout << "4" << std::endl;
-    parent_widget << popover_container;
-    // if(widget.GetCSS("float") != ""){
-    // std::cout << "5" << std::endl;
-    //   parent_widget.SetCSS("float", widget.GetCSS("float"));
-    // }
-    popover_container.SetCSS("visibility", "visible");
-    popover_container.SetCSS("background-color", "yellow");
-    popover_container.SetCSS("opacity", 0.8);
-    popover_container.SetCSS("z-index", "10");
-    popover_container.SetCSS("position", "absolute");
-    popover_container.SetCSS("width", "30%");
-    popover_container.SetCSS("height", "30%");
-    popover_container.SetCSS("top", "20vh");
-    popover_container.SetCSS("left", "20vw");
-    std::cout << "finished adding parent widget: " << parent_widget<<std::endl;
+      std::cout << "2" << std::endl;
+      popover_text << message;
+      popover_text.SetAttr("class", "popup_text");
+      popover_arrow.SetAttr("class", "popup_arrow");
+      std::cout << "3" << std::endl;
+      popover_container << popover_text;
+      popover_container << popover_arrow;
+      popover_container.SetAttr("class", "popup_container popup_show");
+      std::cout << "4" << std::endl;
+      parent_widget << popover_container;
+      // if(widget.GetCSS("float") != ""){
+      // std::cout << "5" << std::endl;
+      //   parent_widget.SetCSS("float", widget.GetCSS("float"));
+      // }
+      popover_container.SetCSS("visibility", "visible");
+      popover_container.SetCSS("background-color", "yellow");
+      popover_container.SetCSS("opacity", 0.8);
+      popover_container.SetCSS("z-index", "12");
+      popover_container.SetCSS("position", "absolute");
+      popover_container.SetCSS("top", top);
+      popover_container.SetCSS("left", left);
+      popover_container.SetCSS("width", "fit-content");
+      popover_container.SetCSS("block-size", "fit-content");
   }
 
 
@@ -353,7 +356,7 @@ private:
     overlay.SetAttr("class", "Tutorial-Overlay-Effect");
     overlay.SetCSS("background-color", color);
     overlay.SetCSS("opacity", opacity);
-    overlay.SetCSS("z-index", -1);
+    overlay.SetCSS("z-index", 10);
     overlay.SetCSS("position", "fixed");
     overlay.SetCSS("width", "100%");
     overlay.SetCSS("height", "100%");
@@ -430,8 +433,8 @@ private:
     void Activate(const std::unordered_map<std::string, emp::Ptr<Trigger>>& trigger_ptr_map,
                   const std::unordered_map<std::string, emp::Ptr<VisualEffect>>& visual_ptr_map) {
       std::cout << "Activate state: " << name << std::endl;
-      std::cout << "Activateing " << trigger_id_set.size() << " triggers!"  << std::endl;
-      std::cout << "Activateing " << visual_id_set.size() << " visuals!"  << std::endl;
+      std::cout << "Activating " << trigger_id_set.size() << " triggers!"  << std::endl;
+      std::cout << "Activating " << visual_id_set.size() << " visuals!"  << std::endl;
 
       // Activate all triggers
       for(auto trigger_id : trigger_id_set) {
@@ -442,8 +445,14 @@ private:
 
       // Activate all visuals
       for(auto visual_id : visual_id_set) {
+        std::cout << "Should activate visual: "<<visual_id << std::endl;
         visual_ptr_map.at(visual_id) -> PerformActivation();
         //visual_ptr_map.at(visual_id) -> SetActive();
+      }
+      std::cout << "AAAAAActivated all visuals" << std::endl;
+      for(auto trigger_id : trigger_id_set) {
+        trigger_ptr_map.at(trigger_id) -> active = false;
+
       }
 
     }
@@ -487,8 +496,9 @@ private:
 class Tutorial {
 
   friend void Trigger::Notify(); // Trigger's Notify() can access our private members. Needed so it can call OnTrigger().
-
-
+protected:
+  size_t num_triggers_added = 0;
+  size_t num_visuals_added = 0;
 private:
 
   bool active = false;
@@ -499,8 +509,7 @@ private:
 
   std::string current_state;
 
-  size_t num_triggers_added = 0;
-  size_t num_visuals_added = 0;
+  
 
   // Retrieve a State object given its ID.
   State & GetState(std::string & state_name) {
@@ -821,14 +830,15 @@ public:
 
     template <typename T>
     Tutorial& AddPopoverEffect(std::string state_name, UI::internal::WidgetFacet<T>& w,
-                                std::string message, std::string visual_id="")
+                                std::string message, std::string top="20vw", std::string left="10vh", std::string visual_id="")
     {
       emp_assert(HasState(state_name));
-      emp::Ptr<VisualEffect> visual_ptr = new PopoverEffect<T>(w, message);
+      emp::Ptr<VisualEffect> visual_ptr = new PopoverEffect<T>(w, message, top, left, std::to_string(num_visuals_added));
       visual_ptr -> AddState(state_name);
 
       if (visual_id.empty())
         visual_id = std::string("unnamed_visual_") + std::to_string(num_visuals_added);
+      std::cout << "newly added visual id is:" << visual_id << std::endl;
 
 
       emp_assert(!HasVisualEffect(visual_id));
@@ -873,30 +883,31 @@ public:
       return *this;
     }
 
-    template<typename T, typename ... Args>
-    Tutorial& AddCustomVisualEffect(std::string state_name, Args&&... args,
-                               std::string visual_id) {
+    template<typename... Args>
+    Tutorial& AddCustomVisualEffect(std::string state_name, std::string element, Args&&... args) {
+      // emp_assert(!HasVisualEffect(visual_id));
 
-      emp_assert(!HasVisualEffect(visual_id));
+      // static_assert(std::is_base_of<VisualEffect, T>::value, "T must derive from VisualEffect");
+      // emp::Ptr<VisualEffect> visual_ptr = new T(std::forward<Args>(args)...);
+      // for (std::int i=0:i<sizeof(args)/2;i+=2) {
+      //   element.SetCSS(args[i], args[i++]);
 
-      static_assert(std::is_base_of<VisualEffect, T>::value, "T must derive from VisualEffect");
-      emp::Ptr<VisualEffect> visual_ptr = new T(std::forward<Args>(args)...);
+      // }
+      // visual_ptr -> AddState(state_name);
 
-      visual_ptr -> AddState(state_name);
+      // std::string visual_id = std::string("unnamed_visual_") + std::to_string(num_visuals_added);
 
-      if (visual_id.empty())
-        visual_id = std::string("unnamed_visual_") + std::to_string(num_visuals_added);
+      // visual_ptr_map[visual_id] = visual_ptr;
+      // GetState(state_name).AddVisualEffect(visual_id);
 
-      visual_ptr_map[visual_id] = visual_ptr;
-      GetState(state_name).AddVisualEffect(visual_id);
 
-      if (state_name == current_state) {
-        visual_ptr -> Activate();
-      }
+      // if (state_name == current_state) {
+      //   visual_ptr -> Activate();
+      // }
 
-      num_visuals_added++;
+      // num_visuals_added++;
 
-      return *this;
+      // return *this;
 
     }
 
@@ -924,7 +935,7 @@ public:
 
      Tutorial& ActivateVisualEffect(std::string visual_id) {
       emp_assert(HasVisualEffect(visual_id));
-
+      std::cout << "####activating visual effect: "<< visual_id << std::endl;
       emp::Ptr<VisualEffect> visual_ptr = GetVisualEffect(visual_id);
       visual_ptr -> PerformActivation();
 
