@@ -365,9 +365,9 @@ private:
 
     if (!intercept_mouse)
       overlay.SetCSS("pointer-events", "none");
-    std::cout << "####In activate of overlay"<<std::endl;
-    parent << overlay;
-    std::cout << "finished adding to parent of overlay"<<std::endl;
+      std::cout << "####In activate of overlay"<<std::endl;
+      parent << overlay;
+      std::cout << "finished adding to parent of overlay"<<std::endl;
 
   }
 
@@ -550,7 +550,7 @@ private:
       current_state = trigger -> GetNextState(current_state) ;
       GetState(current_state).Activate(trigger_ptr_map, visual_ptr_map);
 
-      std::cout << "Entering state " << current_state << std::endl;
+      std::cout << "Entered state " << current_state << std::endl;
 
       // Stop here if this state has no triggers
       if (GetState(current_state).GetTriggerCount() == 0)
@@ -696,10 +696,12 @@ public:
 
       trigger_ptr_map[trigger_id] = trigger_ptr;
       GetState(cur_state).AddTrigger(trigger_id);
+      std::cout<<"~~~~~~added trigger: "<<std::string(trigger_id)<<std::endl;
 
       if (cur_state == current_state) {
         trigger_ptr -> Activate();
       }
+      std::cout<<"about to set callback!"<<std::endl;
 
       trigger_ptr -> SetCallback(callback);
 
