@@ -689,7 +689,9 @@ public:
         trigger_id = std::string("unnamed_trigger_") + std::to_string(num_triggers_added);
 
       emp_assert(!HasState(trigger_id));
-
+      // if (w.GetCallback()) {
+      //   callback = w.GetCallback();
+      // }
       emp::Ptr<Trigger> trigger_ptr = new EventListenerTrigger<T>(w, event_name);
       trigger_ptr -> SetTutorial(this);
       trigger_ptr -> AddStatePair(cur_state, next_state);
@@ -819,6 +821,7 @@ public:
       GetState(state_name).AddVisualEffect(visual_id);
 
       if (state_name == current_state){
+        printf("activating visual ptr:\n");
         visual_ptr -> Activate();
         
       }

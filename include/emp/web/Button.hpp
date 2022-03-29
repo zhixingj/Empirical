@@ -76,6 +76,10 @@ namespace web {
         if (state == Widget::ACTIVE) ReplaceHTML();     // If node is active, immediately redraw!
       }
 
+      std::function<void()> getCallBack() {
+        return callback;
+      }
+
     public:
       virtual std::string GetType() override { return "web::ButtonInfo"; }
     }; // End of ButtonInfo definition
@@ -121,6 +125,11 @@ namespace web {
       Info()->UpdateCallback(in_cb);
       return *this;
     }
+    std::function<void()> GetCallback() {
+      return Info()->getCallBack();
+    }
+
+
 
     /// Set a new label to appear on this Button.
     Button & SetLabel(const std::string & in_label) { Info()->UpdateLabel(in_label); return *this; }
