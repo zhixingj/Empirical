@@ -54,6 +54,8 @@ protected:
     // Given a state, what state are we set to move to next?
     std::string GetNextState(std::string current_state) {
       emp_assert(HasState(current_state));
+      std::cout << "get next state of " << current_state << std::endl;
+      std::cout << next_state_map[current_state] << "here" << std::endl;
       return next_state_map[current_state];
     }
  
@@ -104,6 +106,7 @@ protected:
  
     // Add a pair of states that this trigger is associated with (it can move the tutorial from state to next_state).
     void AddStatePair(std::string state, std::string next_state) {
+      std::cout << "add state pair: " << state << next_state << std::endl
       emp_assert(!HasState(state));
       emp_assert(state != next_state);
       next_state_map[state] = next_state;
@@ -691,9 +694,14 @@ public:
       if (trigger_id.empty())
         trigger_id = std::string("unnamed_trigger_") + std::to_string(num_triggers_added);
  
-      emp_assert(!HasState(trigger_id));
- 
+
+      // BUG
+      // HasState should take in a state name not a trigger id - it is a funciton of trigger!
+      //emp_assert(!HasState(trigger_id));
+      // fixed line two lines below:
+    
       emp::Ptr<Trigger> trigger_ptr = new EventListenerTrigger<T>(w, event_name);
+      emp_assert(!trigger_ptr -> HasState(cur_state));
       trigger_ptr -> SetTutorial(this);
       trigger_ptr -> AddStatePair(cur_state, next_state);
  
