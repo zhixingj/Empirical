@@ -194,10 +194,11 @@ private:
     std::cout << "!!!!!!!!!in performactivation of visual" << std::endl;
     if (active) return;
     Activate();
-    // active = true;
+    active = true;
   }
   void PerformDeactivation() {
     if (!active) return;
+    std::cout << "in perforDEmactivation of visual" << std::endl;
     Deactivate();
     active = false;
   }
@@ -324,13 +325,13 @@ class PopoverEffect : public VisualEffect {
  
  
   void Deactivate() {
-  std::cout << "Removing popover" << std::endl;
-  popover_container.SetAttr("class", "popup_container");
-  std::cout << "1" << std::endl;
-  parent_widget->RemoveChild(widget);
-  std::cout << "2" << std::endl;
-  parent_widget->parent->ReplaceChild(parent_widget, widget);
-  std::cout << "Removed popover" << std::endl;
+    std::cout << "Removing popover" << std::endl;
+    popover_container.SetAttr("class", "popup_container");
+    std::cout << "1" << std::endl;
+    parent_widget->RemoveChild(popover_container);
+    std::cout << "2" << std::endl;
+    // parent_widget->parent->ReplaceChild(parent_widget, widget);
+    std::cout << "Removed popover" << std::endl;
 }
  
 };
@@ -480,8 +481,8 @@ private:
       }
  
       std::cout << "Deactivate state: " << name << std::endl;
-      std::cout << "Removing " << trigger_id_set.size() << " triggers!" << std::endl;
-      std::cout << "Removing " << visual_id_set.size() << " visuals!" << std::endl;
+      std::cout << "Removed " << trigger_id_set.size() << " triggers!" << std::endl;
+      std::cout << "Removed " << visual_id_set.size() << " visuals!" << std::endl;
     }
  
     // how many Triggers does this state have?
@@ -546,7 +547,9 @@ private:
  
   // A Trigger calls this when it's fired, passing a pointer to itself.
   void OnTrigger(emp::Ptr<Trigger> trigger) {
+
  
+      std::cout << "On Trigger!" << current_state << std::endl;
       std::cout << "Leaving state " << current_state << std::endl;
  
       // Deactivate current state
@@ -569,7 +572,7 @@ private:
       if (GetState(current_state).callback) GetState(current_state).callback();
  
  
-    }
+  }
  
  
  
