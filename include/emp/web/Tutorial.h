@@ -345,8 +345,8 @@ class OverlayEffect : public VisualEffect {
  
 private:
  
-  UI::Div& parent;
   UI::Div overlay;
+  UI::Div& parent;
   std::string color;
   float opacity;
   int z_index;
@@ -361,10 +361,10 @@ private:
     overlay = over;
  
     overlay.SetAttr("class", "Tutorial-Overlay-Effect");
-    overlay.SetCSS("background-color", color);
+    // overlay.SetCSS("background-color", color);
     overlay.SetCSS("opacity", opacity);
-    overlay.SetCSS("z-index", 10);
-    overlay.SetCSS("position", "fixed");
+    // overlay.SetCSS("z-index", 10);
+    // overlay.SetCSS("position", "fixed");
     overlay.SetCSS("width", "100%");
     overlay.SetCSS("height", "100%");
     overlay.SetCSS("top", "0px");
@@ -382,7 +382,11 @@ private:
  
     overlay -> parent -> RemoveChild(overlay);
     std::cout << "removed overlay" << std::endl;
-}
+  }
+  public:
+    void SetOverlayCSS(const std::string & setting, const std::string & value) {
+      overlay.SetCSS(setting, value);
+    }
  
 };
  
@@ -583,7 +587,7 @@ public:
  
     // These are the only functions to be called outside of this file :P
  
- 
+  
   bool IsActive() {
     return active;
   }
@@ -845,7 +849,7 @@ public:
  
  
     template <typename T>
-    Tutorial& AddPopoverEffect(std::string state_name, UI::internal::WidgetFacet<T>& w,
+    emp::Ptr<VisualEffect> AddPopoverEffect(std::string state_name, UI::internal::WidgetFacet<T>& w,
                                 std::string message, UI::Button &but, std::string top="20vw", std::string left="10vh", std::string visual_id="")
     {
       emp_assert(HasState(state_name));
@@ -867,17 +871,17 @@ public:
  
       num_visuals_added++;
  
-      return *this;
+      return visual_ptr;
     }
  
-    Tutorial& AddOverlayEffect(std::string state_name, UI::Div& parent, std::string color="black", float opacity=0.4,
+    emp::Ptr<OverlayEffect> AddOverlayEffect(std::string state_name, UI::Div& parent, std::string color="black", float opacity=0.4,
                               int z_index=1000, bool intercept_mouse=false, std::string visual_id="") {
  
       std::cout << "Add Overlay Effect" << std::endl;
       emp_assert(HasState(state_name));
  
  
-      emp::Ptr<VisualEffect> visual_ptr = new OverlayEffect(parent, color, opacity, z_index, intercept_mouse);
+      emp::Ptr<OverlayEffect> visual_ptr = new OverlayEffect(parent, color, opacity, z_index, intercept_mouse);
       visual_ptr -> AddState(state_name);
  
       if (visual_id.empty())
@@ -896,7 +900,7 @@ public:
  
       num_visuals_added++;
  
-      return *this;
+      return visual_ptr;
     }
  
     template<typename... Args>
