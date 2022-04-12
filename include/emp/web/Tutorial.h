@@ -361,10 +361,10 @@ private:
     overlay = over;
  
     overlay.SetAttr("class", "Tutorial-Overlay-Effect");
-    // overlay.SetCSS("background-color", color);
+    overlay.SetCSS("background-color", color);
     overlay.SetCSS("opacity", opacity);
-    // overlay.SetCSS("z-index", 10);
-    // overlay.SetCSS("position", "fixed");
+    overlay.SetCSS("z-index", 10);
+    overlay.SetCSS("position", "fixed");
     overlay.SetCSS("width", "100%");
     overlay.SetCSS("height", "100%");
     overlay.SetCSS("top", "0px");
@@ -372,7 +372,7 @@ private:
  
     if (!intercept_mouse)
       overlay.SetCSS("pointer-events", "none");
-      std::cout << "####In activate of overlay"<<std::endl;
+      std::cout << "In activate of overlay"<<std::endl;
       parent << overlay;
       std::cout << "finished adding to parent of overlay"<<std::endl;
  
@@ -385,6 +385,7 @@ private:
   }
   public:
     void SetOverlayCSS(const std::string & setting, const std::string & value) {
+      std::cout << "In SetOverlayCSS"<<std::endl;
       overlay.SetCSS(setting, value);
     }
  
@@ -464,7 +465,7 @@ private:
       for(auto trigger_id : trigger_id_set) {
         trigger_ptr_map.at(trigger_id) -> active = false;
  
-      }
+      }   
  
     }
  
