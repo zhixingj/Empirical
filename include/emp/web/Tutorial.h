@@ -315,7 +315,7 @@ class PopoverEffect : public VisualEffect {
       popover_container.SetCSS("visibility", "visible");
       popover_container.SetCSS("background-color", "yellow");
       popover_container.SetCSS("opacity", 0.8);
-      popover_container.SetCSS("z-index", "12");
+      popover_container.SetCSS("z-index", "20");
       popover_container.SetCSS("position", "absolute");
       popover_container.SetCSS("top", top);
       popover_container.SetCSS("left", left);
