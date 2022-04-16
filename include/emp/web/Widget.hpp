@@ -605,11 +605,15 @@ namespace web {
       /// CSS-related options may be overridden in derived classes that have multiple styles.
       /// By default DoCSS will track the new information and apply it (if active) to the widget.
       virtual void DoCSS(const std::string & setting, const std::string & value) {
+        std::cout << "do css1" << std::endl;
         info->extras.style.DoSet(setting, value);
+        std::cout << "do css2" << std::endl;
         if (IsActive()) Style::Apply(info->id, setting, value);
+        std::cout << "do css3" << std::endl;
       }
 
       virtual void DoCSS(const std::string & class_) {
+        std::cout << "do css1" << std::endl;
         info->extras.style.AddClass(class_);
         if (IsActive()) Style::ApplyClass(info->id, class_);
       }
@@ -645,8 +649,11 @@ namespace web {
       /// Set a specific CSS value for this widget.
       template <typename SETTING_TYPE>
       return_t & SetCSS(const std::string & setting, SETTING_TYPE && value) {
+        std::cout << "setting css" << setting << std::endl;
         emp_assert(info != nullptr);
+        std::cout << "set1" << std::endl;
         DoCSS(setting, emp::to_string(value));
+        
         return (return_t &) *this;
       }
 
