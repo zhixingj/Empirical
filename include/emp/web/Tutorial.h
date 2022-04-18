@@ -347,13 +347,13 @@ private:
  
   UI::Div overlay;
   UI::Div& parent;
-  UI::Div& spotlight;
+  UI::Div spotlight;
   std::string color;
   float opacity;
   int z_index;
   bool intercept_mouse;
  
-  OverlayEffect(UI::Div& _parent, UI::Div& _spotlight, std::string _color, float _opacity, int _z_index, bool _intercept_mouse) :
+  OverlayEffect(UI::Div& _parent, UI::Div _spotlight, std::string _color, float _opacity, int _z_index, bool _intercept_mouse) :
   parent(_parent), spotlight(_spotlight), color(_color), opacity(_opacity), z_index(_z_index), intercept_mouse(_intercept_mouse) {std::cout << "Overlay Constructor" << std::endl;}
  
   void Activate() {
@@ -371,9 +371,9 @@ private:
     overlay.SetCSS("top", "0px");
     overlay.SetCSS("left", "0px");
  
-    //std::cout << "pre spotlight" << std::endl;
-    //spotlight.SetCSS("z-index", 11);
-    //std::cout << "post spotlight" << std::endl;
+    std::cout << "pre spotlight" << std::endl;
+    spotlight.SetCSS("z-index", "11");
+    std::cout << "post spotlight" << std::endl;
 
     if (!intercept_mouse)
       overlay.SetCSS("pointer-events", "none");
@@ -384,7 +384,7 @@ private:
   }
  
   void Deactivate() {
-    //spotlight.SetCSS("z-index", -1);
+    spotlight.SetCSS("z-index", -1);
     overlay -> parent -> RemoveChild(overlay);
     std::cout << "removed overlay" << std::endl;
   }
