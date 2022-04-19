@@ -9,7 +9,8 @@
 #include "../base/Ptr.hpp"
 #include <iostream>
 #include <stdio.h>
- 
+
+#include <set>
 #include <map>
 #include <unordered_map>
 #include <unordered_set>
@@ -405,14 +406,25 @@ private:
  
     std::unordered_set<std::string> trigger_id_set;
     std::unordered_set<std::string> visual_id_set;
- 
+    std::set<UI::Button> spotlight_but_set;
+    std::set<UI::Document> spotlight_docu_set;
+    std::set<UI::Div> spotlight_div_set;
+
  
     std::string name;
     std::function<void()> callback;
  
     State(){;}
     State(std::string _name) : name(_name)  {}
- 
+    void AddStateSpotlight(UI::Button b) {
+      spotlight_but_set.insert(b);
+    }
+    void AddStateSpotlight(UI::Document d) {
+      spotlight_docu_set.insert(d);
+    }
+    void AddStateSpotlight(UI::Div div) {
+      spotlight_div_set.insert(div);
+    }
     void SetCallback(std::function<void()> cb) { callback = cb; }
  
     bool HasTrigger(std::string trigger_id) {
@@ -466,6 +478,18 @@ private:
         visual_ptr_map.at(visual_id) -> PerformActivation();
         //visual_ptr_map.at(visual_id) -> SetActive();
       }
+      for (auto w : spotlight_but_set) {
+        w.SetCSS("z-index", "16");
+        w.SetCSS("position", "relative");
+      }
+      for (auto w : spotlight_docu_set) {
+        w.SetCSS("z-index", "16");
+        w.SetCSS("position", "relative");
+      }
+      for (auto w : spotlight_div_set) {
+        w.SetCSS("z-index", "16");
+        w.SetCSS("position", "relative");
+      }
       std::cout << "AAAAAActivated all visuals" << std::endl;
       for(auto trigger_id : trigger_id_set) {
         trigger_ptr_map.at(trigger_id) -> active = false;
@@ -489,6 +513,19 @@ private:
         visual_ptr_map.at(visual_id) -> PerformDeactivation();
         //visual_ptr_map.at(visual_id) -> SetInactive();
       }
+      for (auto w : spotlight_div_set) {
+        w.SetCSS("z-index", "0");
+        w.SetCSS("position", "static");
+      }
+      for (auto w : spotlight_but_set) {
+        w.SetCSS("z-index", "0");
+        w.SetCSS("position", "static");
+      }
+      for (auto w : spotlight_docu_set) {
+        w.SetCSS("z-index", "0");
+        w.SetCSS("position", "static");
+      }
+      
  
       std::cout << "Deactivate state: " << name << std::endl;
       std::cout << "Removed " << trigger_id_set.size() << " triggers!" << std::endl;
@@ -588,7 +625,15 @@ private:
  
  
 public:
- 
+    void AddSpotlight(std::string state, UI::Button but) {
+      GetState(state).AddStateSpotlight(but);
+    }
+    void AddSpotlight(std::string state, UI::Document d) {
+      GetState(state).AddStateSpotlight(d);
+    }
+    void AddSpotlight(std::string state, UI::Div div) {
+      GetState(state).AddStateSpotlight(div);
+    }
     // -------------------------------- INTERFACE ----------------------------------------
  
     // These are the only functions to be called outside of this file :P
