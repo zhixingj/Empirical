@@ -577,6 +577,7 @@ private:
   }
  
   void DeleteVisualEffect(std::string visual_id) {
+    std::cout << "A warning about abstract thing with non virutal deletor comes up here - Anya says this might be an issue" << std::endl;
     delete visual_ptr_map[visual_id];
     visual_ptr_map.erase(visual_id);
   }
