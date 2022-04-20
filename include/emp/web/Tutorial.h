@@ -406,9 +406,9 @@ private:
  
     std::unordered_set<std::string> trigger_id_set;
     std::unordered_set<std::string> visual_id_set;
-    std::set<UI::Button> spotlight_but_set;
-    std::set<UI::Document> spotlight_docu_set;
-    std::set<UI::Div> spotlight_div_set;
+    std::multiset<UI::Button> spotlight_but_set;
+    std::multiset<UI::Document> spotlight_docu_set;
+    std::multiset<UI::Div> spotlight_div_set;
 
  
     std::string name;
@@ -423,6 +423,7 @@ private:
       spotlight_docu_set.insert(d);
     }
     void AddStateSpotlight(UI::Div div) {
+      printf("added to div set\n");
       spotlight_div_set.insert(div);
     }
     void SetCallback(std::function<void()> cb) { callback = cb; }
@@ -487,6 +488,7 @@ private:
         w.SetCSS("position", "relative");
       }
       for (auto w : spotlight_div_set) {
+        printf("div set+1\n");
         w.SetCSS("z-index", "16");
         w.SetCSS("position", "relative");
       }
