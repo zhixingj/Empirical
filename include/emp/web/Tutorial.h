@@ -275,12 +275,14 @@ class PopoverEffect : public VisualEffect {
     std::string popover_id;
     std::string top;
     std::string left;
+    std::string width;
   public:
     //PopoverEffect(UI::internal::WidgetFacet<T>& _widget, UI::Widget & _orig_parent, std::string _message) :
-    PopoverEffect(UI::internal::WidgetFacet<T>& _widget, std::string _message, std::string _top, std::string _left, std::string id, UI::Button &_but) :
+    PopoverEffect(UI::internal::WidgetFacet<T>& _widget, std::string _message, std::string _top, std::string _left, std::string _width, std::string id, UI::Button &_but) :
         // parent_widget(_widget.GetID() + "_popover_parent"),
         top(_top),
         left(_left),
+        width(_width),
         parent_widget(_widget),
         widget(_widget),
         popover_container(_widget.GetID() + "_popover_container"+id),
@@ -314,12 +316,13 @@ class PopoverEffect : public VisualEffect {
       //   parent_widget.SetCSS("float", widget.GetCSS("float"));
       // }
       popover_container.SetCSS("visibility", "visible");
-      popover_container.SetCSS("background-color", "yellow");
+      popover_container.SetCSS("background-color", "plum");
       popover_container.SetCSS("opacity", 0.8);
       popover_container.SetCSS("z-index", "20");
       popover_container.SetCSS("position", "absolute");
       popover_container.SetCSS("top", top);
       popover_container.SetCSS("left", left);
+      popover_container.SetCSS("width", width);
       popover_container.SetCSS("width", "fit-content");
       popover_container.SetCSS("block-size", "fit-content");
   }
@@ -904,10 +907,10 @@ public:
  
     template <typename T>
     emp::Ptr<VisualEffect> AddPopoverEffect(std::string state_name, UI::internal::WidgetFacet<T>& w,
-                                std::string message, UI::Button &but, std::string top="20vw", std::string left="10vh", std::string visual_id="")
+                                std::string message, UI::Button &but, std::string top="20vw", std::string left="10vh", std::string width="auto", std::string visual_id="")
     {
       emp_assert(HasState(state_name));
-      emp::Ptr<VisualEffect> visual_ptr = new PopoverEffect<T>(w, message, top, left, std::to_string(num_visuals_added), but);
+      emp::Ptr<VisualEffect> visual_ptr = new PopoverEffect<T>(w, message, top, left, width, std::to_string(num_visuals_added), but);
       visual_ptr -> AddState(state_name);
  
       if (visual_id.empty())
