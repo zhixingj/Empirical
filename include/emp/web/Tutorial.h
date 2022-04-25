@@ -323,7 +323,6 @@ class PopoverEffect : public VisualEffect {
       popover_container.SetCSS("top", top);
       popover_container.SetCSS("left", left);
       popover_container.SetCSS("width", width);
-      popover_container.SetCSS("width", "fit-content");
       popover_container.SetCSS("block-size", "fit-content");
   }
  
