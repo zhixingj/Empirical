@@ -350,14 +350,13 @@ private:
  
   UI::Div overlay;
   UI::Div& parent;
-  UI::Div spotlight;
   std::string color;
   float opacity;
   int z_index;
   bool intercept_mouse;
  
-  OverlayEffect(UI::Div& _parent, UI::Div _spotlight, std::string _color, float _opacity, int _z_index, bool _intercept_mouse) :
-  parent(_parent), spotlight(_spotlight), color(_color), opacity(_opacity), z_index(_z_index), intercept_mouse(_intercept_mouse) {std::cout << "Overlay Constructor" << std::endl;}
+  OverlayEffect(UI::Div& _parent, std::string _color, float _opacity, int _z_index, bool _intercept_mouse) :
+  parent(_parent), color(_color), opacity(_opacity), z_index(_z_index), intercept_mouse(_intercept_mouse) {std::cout << "Overlay Constructor" << std::endl;}
  
   void Activate() {
  
@@ -374,10 +373,6 @@ private:
     overlay.SetCSS("top", "0px");
     overlay.SetCSS("left", "0px");
  
-    std::cout << "pre spotlight" << std::endl;
-    spotlight.SetCSS("z-index", "11");
-    std::cout << "post spotlight" << std::endl;
-
     if (!intercept_mouse)
       overlay.SetCSS("pointer-events", "none");
       std::cout << "In activate of overlay"<<std::endl;
@@ -387,7 +382,6 @@ private:
   }
  
   void Deactivate() {
-    spotlight.SetCSS("z-index", -1);
     overlay -> parent -> RemoveChild(overlay);
     std::cout << "removed overlay" << std::endl;
   }
@@ -560,6 +554,7 @@ protected:
 private:
  
   bool active = false;
+  UI::Button start_but;
  
   std::unordered_map<std::string, State> states;  // Store all the states for this Tutorial
   std::unordered_map<std::string, emp::Ptr<Trigger>> trigger_ptr_map; // Store all the triggers for this Tutorial
@@ -671,8 +666,10 @@ public:
     }
  
     // Launch into the tutorial at a particular state
-    void StartAtState(std::string state_name){
- 
+    void StartAtState(std::string state_name, UI::Button _start_but){
+      start_but=_start_but;
+      start_but.SetLabel("End Tutorial");
+      printf("changedddddd label");
       // Deactivate current state
       if (active)
         GetState(current_state).Deactivate(trigger_ptr_map, visual_ptr_map);
@@ -706,6 +703,9 @@ public:
         GetState(current_state).Deactivate(trigger_ptr_map, visual_ptr_map);
  
       active = false;
+      if (start_but) {
+        start_but.SetLabel("Start Tutorial");
+      }
  
       std::cout << "Tutorial Finished!" << std::endl;
     }
@@ -930,14 +930,14 @@ public:
       return visual_ptr;
     }
  
-    emp::Ptr<OverlayEffect> AddOverlayEffect(std::string state_name, UI::Div& parent, UI::Div& spotlight, std::string color="black", float opacity=0.4,
+    emp::Ptr<OverlayEffect> AddOverlayEffect(std::string state_name, UI::Div& parent, std::string color="black", float opacity=0.4,
                               int z_index=1000, bool intercept_mouse=false, std::string visual_id="") {
  
       std::cout << "Add Overlay Effect" << std::endl;
       emp_assert(HasState(state_name));
  
  
-      emp::Ptr<OverlayEffect> visual_ptr = new OverlayEffect(parent, spotlight, color, opacity, z_index, intercept_mouse);
+      emp::Ptr<OverlayEffect> visual_ptr = new OverlayEffect(parent, color, opacity, z_index, intercept_mouse);
       visual_ptr -> AddState(state_name);
  
       if (visual_id.empty())
