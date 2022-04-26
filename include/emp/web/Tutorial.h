@@ -93,7 +93,7 @@ protected:
     // Helper functions to keep bookkeeping stuff out of Activate/Deactivate.
     // Makes it simpler to override those functions in custom classes.
     void PerformActivation() {
-      std::cout << "^^^^^^^^^^^^^^^^in PerformActivation of visual" << std::endl;
+      std::cout << "in PerformActivation of visual" << std::endl;
       if (active) return;
       std::cout << "in Trigger PerformActivation" << std::endl;
       Activate();
@@ -489,10 +489,10 @@ private:
         w.SetCSS("position", "relative");
       }
       std::cout << "AAAAAActivated all visuals" << std::endl;
-      for(auto trigger_id : trigger_id_set) {
-        trigger_ptr_map.at(trigger_id) -> active = false;
+      // for(auto trigger_id : trigger_id_set) {
+      //   trigger_ptr_map.at(trigger_id) -> active = false;
  
-      }   
+      // }   
  
     }
  
@@ -618,7 +618,9 @@ private:
       if (trigger -> callback) trigger -> callback();
       if (GetState(current_state).callback) GetState(current_state).callback();
  
- 
+      if (current_state != "first_state" && current_state != "end_state") {
+        start_but.SetLabel("End Tutorial");
+      }
   }
  
  
@@ -667,9 +669,8 @@ public:
  
     // Launch into the tutorial at a particular state
     void StartAtState(std::string state_name, UI::Button _start_but){
+      printf("starting at first state!");
       start_but=_start_but;
-      start_but.SetLabel("End Tutorial");
-      printf("changedddddd label");
       // Deactivate current state
       if (active)
         GetState(current_state).Deactivate(trigger_ptr_map, visual_ptr_map);
@@ -686,7 +687,6 @@ public:
       std::cout << "visual size in Start: " << GetState(current_state).GetVisualEffectCount() << std::endl;
       GetState(current_state).Activate(trigger_ptr_map, visual_ptr_map);
       active = true;
- 
       // state callback, if any
       if (GetState(current_state).callback)
         GetState(current_state).callback();
@@ -703,10 +703,8 @@ public:
         GetState(current_state).Deactivate(trigger_ptr_map, visual_ptr_map);
  
       active = false;
-      if (start_but) {
-        start_but.SetLabel("Start Tutorial");
-      }
- 
+      start_but.SetLabel("Start Tutorial");
+  
       std::cout << "Tutorial Finished!" << std::endl;
     }
  
