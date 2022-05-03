@@ -669,7 +669,6 @@ public:
  
     // Launch into the tutorial at a particular state
     void StartAtState(std::string state_name, UI::Button _start_but){
-      printf("starting at first state!");
       start_but=_start_but;
       // Deactivate current state
       if (active)
@@ -690,6 +689,9 @@ public:
       // state callback, if any
       if (GetState(current_state).callback)
         GetState(current_state).callback();
+      if (current_state != "first_state" && current_state != "end_state") {
+        start_but.SetLabel("End Tutorial");
+      }
     }
  
     // End the tutorial
