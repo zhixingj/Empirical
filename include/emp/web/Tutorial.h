@@ -332,6 +332,10 @@ class PopoverEffect : public VisualEffect {
     popover_container.SetAttr("class", "popup_container");
     std::cout << "1" << std::endl;
     parent_widget->RemoveChild(popover_container);
+    popover_container->RemoveChild(popover_text);
+    popover_container->RemoveChild(popover_arrow);
+    popover_text.Clear();
+    
     std::cout << "2" << std::endl;
     // parent_widget->parent->ReplaceChild(parent_widget, widget);
     std::cout << "Removed popover" << std::endl;
@@ -520,7 +524,7 @@ private:
         w.SetCSS("position", "static");
       }
       for (auto w : spotlight_docu_set) {
-        w.SetCSS("z-index", "0");
+        w.SetCSS("z-index", "-1");
         w.SetCSS("position", "static");
       }
       
@@ -621,6 +625,9 @@ private:
       if (current_state != "first_state" && current_state != "end_state") {
         start_but.SetLabel("End Tutorial");
       }
+      if (current_state=="first_state") {
+        start_but.SetLabel("Start Tutorial");
+      }
   }
  
  
@@ -691,6 +698,9 @@ public:
         GetState(current_state).callback();
       if (current_state != "first_state" && current_state != "end_state") {
         start_but.SetLabel("End Tutorial");
+      }
+      if (current_state=="first_state") {
+        start_but.SetLabel("Start Tutorial");
       }
     }
  
